@@ -4,18 +4,19 @@
 #
 Name     : onnx
 Version  : 1.3.0
-Release  : 3
+Release  : 4
 URL      : https://github.com/onnx/onnx/archive/v1.3.0.tar.gz
 Source0  : https://github.com/onnx/onnx/archive/v1.3.0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : MIT
-Requires: onnx-data
-Requires: onnx-license
+Requires: onnx-data = %{version}-%{release}
+Requires: onnx-license = %{version}-%{release}
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
 BuildRequires : glibc-dev
 BuildRequires : protobuf-dev
+BuildRequires : pybind11-dev
 BuildRequires : python3
 BuildRequires : python3-dev
 
@@ -36,8 +37,8 @@ data components for the onnx package.
 %package dev
 Summary: dev components for the onnx package.
 Group: Development
-Requires: onnx-data
-Provides: onnx-devel
+Requires: onnx-data = %{version}-%{release}
+Provides: onnx-devel = %{version}-%{release}
 
 %description dev
 dev components for the onnx package.
@@ -59,18 +60,18 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1535662317
+export SOURCE_DATE_EPOCH=1540937843
 mkdir -p clr-build
 pushd clr-build
-%cmake ..
-make  %{?_smp_mflags}
+%cmake .. -DBUILD_ONNX_PYTHON=ON
+make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1535662317
+export SOURCE_DATE_EPOCH=1540937843
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/onnx
-cp LICENSE %{buildroot}/usr/share/doc/onnx/LICENSE
+mkdir -p %{buildroot}/usr/share/package-licenses/onnx
+cp LICENSE %{buildroot}/usr/share/package-licenses/onnx/LICENSE
 pushd clr-build
 %make_install
 popd
@@ -155,5 +156,5 @@ popd
 /usr/lib/libonnxifi_dummy.so
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/onnx/LICENSE
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/onnx/LICENSE
