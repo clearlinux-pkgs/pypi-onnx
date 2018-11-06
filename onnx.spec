@@ -4,20 +4,21 @@
 #
 Name     : onnx
 Version  : 1.3.0
-Release  : 4
+Release  : 5
 URL      : https://github.com/onnx/onnx/archive/v1.3.0.tar.gz
 Source0  : https://github.com/onnx/onnx/archive/v1.3.0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : MIT
-Requires: onnx-data = %{version}-%{release}
+Requires: onnx-bin = %{version}-%{release}
 Requires: onnx-license = %{version}-%{release}
+Requires: onnx-python = %{version}-%{release}
+Requires: onnx-python3 = %{version}-%{release}
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
-BuildRequires : glibc-dev
 BuildRequires : protobuf-dev
 BuildRequires : pybind11-dev
-BuildRequires : python3
+BuildRequires : pytest-runner
 BuildRequires : python3-dev
 
 %description
@@ -26,22 +27,13 @@ BuildRequires : python3-dev
 |-------|---------|
 | [![Build Status](https://travis-ci.org/onnx/onnx.svg?branch=master)](https://travis-ci.org/onnx/onnx) | [![Build status](https://ci.appveyor.com/api/projects/status/lm50cevk2hmrll98/branch/master?svg=true)](https://ci.appveyor.com/project/onnx/onnx) |
 
-%package data
-Summary: data components for the onnx package.
-Group: Data
+%package bin
+Summary: bin components for the onnx package.
+Group: Binaries
+Requires: onnx-license = %{version}-%{release}
 
-%description data
-data components for the onnx package.
-
-
-%package dev
-Summary: dev components for the onnx package.
-Group: Development
-Requires: onnx-data = %{version}-%{release}
-Provides: onnx-devel = %{version}-%{release}
-
-%description dev
-dev components for the onnx package.
+%description bin
+bin components for the onnx package.
 
 
 %package license
@@ -52,6 +44,24 @@ Group: Default
 license components for the onnx package.
 
 
+%package python
+Summary: python components for the onnx package.
+Group: Default
+Requires: onnx-python3 = %{version}-%{release}
+
+%description python
+python components for the onnx package.
+
+
+%package python3
+Summary: python3 components for the onnx package.
+Group: Default
+Requires: python3-core
+
+%description python3
+python3 components for the onnx package.
+
+
 %prep
 %setup -q -n onnx-1.3.0
 
@@ -60,101 +70,34 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540937843
-mkdir -p clr-build
-pushd clr-build
-%cmake .. -DBUILD_ONNX_PYTHON=ON
-make  %{?_smp_mflags} VERBOSE=1
-popd
+export SOURCE_DATE_EPOCH=1541536077
+python3 setup.py build
 
 %install
-export SOURCE_DATE_EPOCH=1540937843
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/onnx
 cp LICENSE %{buildroot}/usr/share/package-licenses/onnx/LICENSE
-pushd clr-build
-%make_install
-popd
+python3 -tt setup.py build  install --root=%{buildroot}
+echo ----[ mark ]----
+cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
+echo ----[ mark ]----
 
 %files
 %defattr(-,root,root,-)
 
-%files data
+%files bin
 %defattr(-,root,root,-)
-/usr/share/cmake/*
-
-%files dev
-%defattr(-,root,root,-)
-/usr/include/onnx/checker.h
-/usr/include/onnx/common/array_ref.h
-/usr/include/onnx/common/assertions.h
-/usr/include/onnx/common/constants.h
-/usr/include/onnx/common/graph_node_list.h
-/usr/include/onnx/common/interned_strings.h
-/usr/include/onnx/common/ir.h
-/usr/include/onnx/common/ir_pb_converter.h
-/usr/include/onnx/common/model_helpers.h
-/usr/include/onnx/common/status.h
-/usr/include/onnx/common/stl_backports.h
-/usr/include/onnx/common/tensor.h
-/usr/include/onnx/defs/data_type_utils.h
-/usr/include/onnx/defs/function.h
-/usr/include/onnx/defs/operator_sets-ml.h
-/usr/include/onnx/defs/operator_sets.h
-/usr/include/onnx/defs/schema.h
-/usr/include/onnx/defs/shape_inference.h
-/usr/include/onnx/onnx-operators.pb.h
-/usr/include/onnx/onnx-operators_pb.h
-/usr/include/onnx/onnx.pb.h
-/usr/include/onnx/onnx_pb.h
-/usr/include/onnx/onnxifi.h
-/usr/include/onnx/onnxifi_loader.h
-/usr/include/onnx/optimizer/optimize.h
-/usr/include/onnx/optimizer/passes/eliminate_identity.h
-/usr/include/onnx/optimizer/passes/eliminate_nop_pad.h
-/usr/include/onnx/optimizer/passes/eliminate_nop_transpose.h
-/usr/include/onnx/optimizer/passes/eliminate_unused_initializer.h
-/usr/include/onnx/optimizer/passes/extract_constant_to_initializer.h
-/usr/include/onnx/optimizer/passes/fuse_add_bias_into_conv.h
-/usr/include/onnx/optimizer/passes/fuse_bn_into_conv.h
-/usr/include/onnx/optimizer/passes/fuse_consecutive_squeezes.h
-/usr/include/onnx/optimizer/passes/fuse_consecutive_transposes.h
-/usr/include/onnx/optimizer/passes/fuse_transpose_into_gemm.h
-/usr/include/onnx/optimizer/passes/lift_lexical_references.h
-/usr/include/onnx/optimizer/passes/nop.h
-/usr/include/onnx/optimizer/passes/optimize_pass.h
-/usr/include/onnx/optimizer/passes/split.h
-/usr/include/onnx/proto_utils.h
-/usr/include/onnx/py_utils.h
-/usr/include/onnx/shape_inference/implementation.h
-/usr/include/onnx/string_utils.h
-/usr/include/onnx/version_converter/BaseConverter.h
-/usr/include/onnx/version_converter/adapters/adapter.h
-/usr/include/onnx/version_converter/adapters/averagepool_7_6.h
-/usr/include/onnx/version_converter/adapters/batch_normalization_6_5.h
-/usr/include/onnx/version_converter/adapters/batch_normalization_6_7.h
-/usr/include/onnx/version_converter/adapters/broadcast_backward_compatibility.h
-/usr/include/onnx/version_converter/adapters/broadcast_forward_compatibility.h
-/usr/include/onnx/version_converter/adapters/compatible.h
-/usr/include/onnx/version_converter/adapters/concat_3_4.h
-/usr/include/onnx/version_converter/adapters/dropout_6_7.h
-/usr/include/onnx/version_converter/adapters/gemm_6_7.h
-/usr/include/onnx/version_converter/adapters/gemm_7_6.h
-/usr/include/onnx/version_converter/adapters/maxpool_8_7.h
-/usr/include/onnx/version_converter/adapters/no_previous_version.h
-/usr/include/onnx/version_converter/adapters/remove_consumed_inputs.h
-/usr/include/onnx/version_converter/adapters/reshape_4_5.h
-/usr/include/onnx/version_converter/adapters/reshape_5_4.h
-/usr/include/onnx/version_converter/adapters/set_is_test.h
-/usr/include/onnx/version_converter/adapters/sum_8_7.h
-/usr/include/onnx/version_converter/adapters/type_restriction.h
-/usr/include/onnx/version_converter/convert.h
-/usr/include/onnx/version_converter/helper.h
-/usr/lib/libonnx.so
-/usr/lib/libonnx_proto.so
-/usr/lib/libonnxifi.so
-/usr/lib/libonnxifi_dummy.so
+/usr/bin/backend-test-tools
+/usr/bin/check-model
+/usr/bin/check-node
 
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/onnx/LICENSE
+
+%files python
+%defattr(-,root,root,-)
+
+%files python3
+%defattr(-,root,root,-)
+/usr/lib/python3*/*
