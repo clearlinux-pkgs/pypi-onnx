@@ -4,7 +4,7 @@
 #
 Name     : onnx
 Version  : 1.3.0
-Release  : 6
+Release  : 7
 URL      : https://files.pythonhosted.org/packages/f9/02/03c432628b6985c72f8e5ff35ea6db4bbc691eb0b1c7649d26772bbfa201/onnx-1.3.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/f9/02/03c432628b6985c72f8e5ff35ea6db4bbc691eb0b1c7649d26772bbfa201/onnx-1.3.0.tar.gz
 Summary  : Open Neural Network Exchange
@@ -25,6 +25,7 @@ BuildRequires : protobuf-dev
 BuildRequires : pybind11-dev
 BuildRequires : pytest-runner
 BuildRequires : python3-dev
+BuildRequires : typing_extensions
 
 %description
 <p align="center"><img width="40%" src="docs/ONNX_logo_main.png" /></p>
@@ -75,7 +76,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1541545787
+export SOURCE_DATE_EPOCH=1545942954
+export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
 
 %install
