@@ -4,3 +4,4 @@ protobuf-dev
 pybind11-dev
 pytest-runner
 typing_extensions
+dos2unix
