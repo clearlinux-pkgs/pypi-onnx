@@ -4,7 +4,7 @@
 #
 Name     : onnx
 Version  : 1.6.0
-Release  : 19
+Release  : 20
 URL      : https://files.pythonhosted.org/packages/81/a9/a14c3bc32908c37b46b19a89eb6185b0c90fd9c03ef12379d51940b8fc71/onnx-1.6.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/81/a9/a14c3bc32908c37b46b19a89eb6185b0c90fd9c03ef12379d51940b8fc71/onnx-1.6.0.tar.gz
 Summary  : Open Neural Network Exchange
@@ -15,16 +15,14 @@ Requires: onnx-license = %{version}-%{release}
 Requires: onnx-python = %{version}-%{release}
 Requires: onnx-python3 = %{version}-%{release}
 Requires: numpy
-Requires: protobuf
 Requires: six
 Requires: typing
 Requires: typing_extensions
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
+BuildRequires : compat-protobuf-soname21-dev
 BuildRequires : dos2unix
 BuildRequires : numpy
-BuildRequires : protobuf
-BuildRequires : protobuf-dev
 BuildRequires : pybind11-dev
 BuildRequires : pytest-runner
 BuildRequires : python3-dev
@@ -33,12 +31,7 @@ BuildRequires : typing
 BuildRequires : typing_extensions
 
 %description
-# pybind11 — Seamless operability between C++11 and Python
-[![Documentation Status](https://readthedocs.org/projects/pybind11/badge/?version=master)](http://pybind11.readthedocs.org/en/master/?badge=master)
-[![Documentation Status](https://readthedocs.org/projects/pybind11/badge/?version=stable)](http://pybind11.readthedocs.org/en/stable/?badge=stable)
-[![Gitter chat](https://img.shields.io/gitter/room/gitterHQ/gitter.svg)](https://gitter.im/pybind/Lobby)
-[![Build Status](https://travis-ci.org/pybind/pybind11.svg?branch=master)](https://travis-ci.org/pybind/pybind11)
-[![Build status](https://ci.appveyor.com/api/projects/status/riaj54pn4h08xy40?svg=true)](https://ci.appveyor.com/project/wjakob/pybind11)
+![pybind11 logo](https://github.com/pybind/pybind11/raw/master/docs/pybind11-logo.png)
 
 %package bin
 Summary: bin components for the onnx package.
@@ -77,6 +70,7 @@ python3 components for the onnx package.
 
 %prep
 %setup -q -n onnx-1.6.0
+cd %{_builddir}/onnx-1.6.0
 
 %build
 ## build_prepend content
@@ -86,8 +80,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1569781006
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1575567447
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -103,9 +96,9 @@ python3 setup.py build
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/onnx
-cp LICENSE %{buildroot}/usr/share/package-licenses/onnx/LICENSE
-cp third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/onnx/third_party_benchmark_LICENSE
-cp third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/onnx/third_party_pybind11_LICENSE
+cp %{_builddir}/onnx-1.6.0/LICENSE %{buildroot}/usr/share/package-licenses/onnx/72abeb57e64fb30074f90a0cf3238a35f63d8a6d
+cp %{_builddir}/onnx-1.6.0/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/onnx/2b8b815229aa8a61e483fb4ba0588b8b6c491890
+cp %{_builddir}/onnx-1.6.0/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/onnx/a33b61f04391a38904373d020e7fbabf211383f6
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -122,9 +115,9 @@ echo ----[ mark ]----
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/onnx/LICENSE
-/usr/share/package-licenses/onnx/third_party_benchmark_LICENSE
-/usr/share/package-licenses/onnx/third_party_pybind11_LICENSE
+/usr/share/package-licenses/onnx/2b8b815229aa8a61e483fb4ba0588b8b6c491890
+/usr/share/package-licenses/onnx/72abeb57e64fb30074f90a0cf3238a35f63d8a6d
+/usr/share/package-licenses/onnx/a33b61f04391a38904373d020e7fbabf211383f6
 
 %files python
 %defattr(-,root,root,-)
