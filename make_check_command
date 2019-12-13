@@ -1,0 +1,3 @@
+pyver=$(pkg-config --modversion python3)
+export PYTHONPATH="$PWD/build/lib.linux-x86_64-$pyver"
+pytest -v
