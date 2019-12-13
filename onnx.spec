@@ -4,7 +4,7 @@
 #
 Name     : onnx
 Version  : 1.6.0
-Release  : 20
+Release  : 21
 URL      : https://files.pythonhosted.org/packages/81/a9/a14c3bc32908c37b46b19a89eb6185b0c90fd9c03ef12379d51940b8fc71/onnx-1.6.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/81/a9/a14c3bc32908c37b46b19a89eb6185b0c90fd9c03ef12379d51940b8fc71/onnx-1.6.0.tar.gz
 Summary  : Open Neural Network Exchange
@@ -15,20 +15,23 @@ Requires: onnx-license = %{version}-%{release}
 Requires: onnx-python = %{version}-%{release}
 Requires: onnx-python3 = %{version}-%{release}
 Requires: numpy
+Requires: protobuf
 Requires: six
 Requires: typing
 Requires: typing_extensions
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
-BuildRequires : compat-protobuf-soname21-dev
 BuildRequires : dos2unix
 BuildRequires : numpy
+BuildRequires : protobuf
+BuildRequires : protobuf-dev
 BuildRequires : pybind11-dev
 BuildRequires : pytest-runner
 BuildRequires : python3-dev
 BuildRequires : six
 BuildRequires : typing
 BuildRequires : typing_extensions
+Patch1: fix-build.patch
 
 %description
 ![pybind11 logo](https://github.com/pybind/pybind11/raw/master/docs/pybind11-logo.png)
@@ -71,6 +74,7 @@ python3 components for the onnx package.
 %prep
 %setup -q -n onnx-1.6.0
 cd %{_builddir}/onnx-1.6.0
+%patch1 -p1
 
 %build
 ## build_prepend content
@@ -80,7 +84,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1575567447
+export SOURCE_DATE_EPOCH=1576267246
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib

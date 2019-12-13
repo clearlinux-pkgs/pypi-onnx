@@ -1,8 +1,7 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
-# temporary hack while onnx fixes itself to work with latest protobuf
-compat-protobuf-soname21-dev
 pybind11-dev
 pytest-runner
 typing_extensions
 dos2unix
+protobuf-dev
