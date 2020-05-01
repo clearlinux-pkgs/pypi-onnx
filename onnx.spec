@@ -4,7 +4,7 @@
 #
 Name     : onnx
 Version  : 1.6.0
-Release  : 22
+Release  : 23
 URL      : https://files.pythonhosted.org/packages/81/a9/a14c3bc32908c37b46b19a89eb6185b0c90fd9c03ef12379d51940b8fc71/onnx-1.6.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/81/a9/a14c3bc32908c37b46b19a89eb6185b0c90fd9c03ef12379d51940b8fc71/onnx-1.6.0.tar.gz
 Summary  : Open Neural Network Exchange
@@ -17,7 +17,6 @@ Requires: onnx-python3 = %{version}-%{release}
 Requires: numpy
 Requires: protobuf
 Requires: six
-Requires: typing
 Requires: typing_extensions
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
@@ -32,7 +31,6 @@ BuildRequires : pytest-runner
 BuildRequires : python-tabulate
 BuildRequires : python3-dev
 BuildRequires : six
-BuildRequires : typing
 BuildRequires : typing_extensions
 Patch1: fix-build.patch
 
@@ -87,14 +85,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1576269199
+export SOURCE_DATE_EPOCH=1588360962
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build

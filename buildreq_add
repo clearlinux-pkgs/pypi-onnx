@@ -7,5 +7,4 @@ pybind11-dev
 pytest
 pytest-runner
 python-tabulate
-typing
 typing_extensions
