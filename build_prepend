@@ -1,1 +1,4 @@
-find | xargs  -n 1 dos2unix
+find | xargs -n 1 dos2unix
+# requires an additional archive to run these tests... avoid for now
+#export ONNX_BUILD_TESTS=1
+export CMAKE_ARGS="-DCMAKE_INSTALL_PREFIX=/usr"
