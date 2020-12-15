@@ -4,7 +4,7 @@
 #
 Name     : onnx
 Version  : 1.8.0
-Release  : 28
+Release  : 29
 URL      : https://files.pythonhosted.org/packages/bc/8b/a7de205514540e99d3e00b35b01710345b1306a2a04d75ef6697f074f499/onnx-1.8.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/bc/8b/a7de205514540e99d3e00b35b01710345b1306a2a04d75ef6697f074f499/onnx-1.8.0.tar.gz
 Summary  : Open Neural Network Exchange
