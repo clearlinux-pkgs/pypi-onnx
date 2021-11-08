@@ -4,7 +4,7 @@
 #
 Name     : onnx
 Version  : 1.10.2
-Release  : 41
+Release  : 42
 URL      : https://files.pythonhosted.org/packages/16/6a/bdae938babb4bc23de7b599439f3d1f1179748385e4ced099f3b4cb646bd/onnx-1.10.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/16/6a/bdae938babb4bc23de7b599439f3d1f1179748385e4ced099f3b4cb646bd/onnx-1.10.2.tar.gz
 Summary  : Open Neural Network Exchange
@@ -98,7 +98,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1635295046
+export SOURCE_DATE_EPOCH=1636404052
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -110,13 +110,6 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
 
-%check
-export http_proxy=http://127.0.0.1:9/
-export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost,127.0.0.1,0.0.0.0
-pyver=$(pkg-config --modversion python3)
-export PYTHONPATH="$PWD/build/lib.linux-x86_64-$pyver"
-pytest -v
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
