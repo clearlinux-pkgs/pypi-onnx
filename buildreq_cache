@@ -1,2 +1,6 @@
 1.10.2
+pypi(numpy)
+pypi(pytest_runner)
+pypi(six)
+pypi(typing_extensions)
 python3-dev
