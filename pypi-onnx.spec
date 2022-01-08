@@ -4,7 +4,7 @@
 #
 Name     : pypi-onnx
 Version  : 1.10.2
-Release  : 45
+Release  : 46
 URL      : https://files.pythonhosted.org/packages/16/6a/bdae938babb4bc23de7b599439f3d1f1179748385e4ced099f3b4cb646bd/onnx-1.10.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/16/6a/bdae938babb4bc23de7b599439f3d1f1179748385e4ced099f3b4cb646bd/onnx-1.10.2.tar.gz
 Summary  : Open Neural Network Exchange
@@ -14,7 +14,7 @@ Requires: pypi-onnx-bin = %{version}-%{release}
 Requires: pypi-onnx-license = %{version}-%{release}
 Requires: pypi-onnx-python = %{version}-%{release}
 Requires: pypi-onnx-python3 = %{version}-%{release}
-Requires: typing_extensions
+Requires: pypi(typing_extensions)
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
 BuildRequires : dos2unix
@@ -91,7 +91,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1641516822
+export SOURCE_DATE_EPOCH=1641668491
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
