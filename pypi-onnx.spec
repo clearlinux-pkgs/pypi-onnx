@@ -4,13 +4,15 @@
 #
 Name     : pypi-onnx
 Version  : 1.11.0
-Release  : 47
+Release  : 48
 URL      : https://files.pythonhosted.org/packages/fd/b7/fccddff4d1873074605ff08acc812202b4a849cf4925b1f6ed5eeba575c4/onnx-1.11.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/fd/b7/fccddff4d1873074605ff08acc812202b4a849cf4925b1f6ed5eeba575c4/onnx-1.11.0.tar.gz
 Summary  : Open Neural Network Exchange
 Group    : Development/Tools
-License  : Apache-2.0
+License  : Apache-2.0 BSD-3-Clause
 Requires: pypi-onnx-bin = %{version}-%{release}
+Requires: pypi-onnx-filemap = %{version}-%{release}
+Requires: pypi-onnx-lib = %{version}-%{release}
 Requires: pypi-onnx-license = %{version}-%{release}
 Requires: pypi-onnx-python = %{version}-%{release}
 Requires: pypi-onnx-python3 = %{version}-%{release}
@@ -39,9 +41,28 @@ capabilities needed for inferencing (scoring).
 Summary: bin components for the pypi-onnx package.
 Group: Binaries
 Requires: pypi-onnx-license = %{version}-%{release}
+Requires: pypi-onnx-filemap = %{version}-%{release}
 
 %description bin
 bin components for the pypi-onnx package.
+
+
+%package filemap
+Summary: filemap components for the pypi-onnx package.
+Group: Default
+
+%description filemap
+filemap components for the pypi-onnx package.
+
+
+%package lib
+Summary: lib components for the pypi-onnx package.
+Group: Libraries
+Requires: pypi-onnx-license = %{version}-%{release}
+Requires: pypi-onnx-filemap = %{version}-%{release}
+
+%description lib
+lib components for the pypi-onnx package.
 
 
 %package license
@@ -64,6 +85,7 @@ python components for the pypi-onnx package.
 %package python3
 Summary: python3 components for the pypi-onnx package.
 Group: Default
+Requires: pypi-onnx-filemap = %{version}-%{release}
 Requires: python3-core
 Provides: pypi(onnx)
 Requires: pypi(numpy)
@@ -77,6 +99,9 @@ python3 components for the pypi-onnx package.
 %prep
 %setup -q -n onnx-1.11.0
 cd %{_builddir}/onnx-1.11.0
+pushd ..
+cp -a onnx-1.11.0 buildavx2
+popd
 
 %build
 ## build_prepend content
@@ -89,7 +114,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1645214663
+export SOURCE_DATE_EPOCH=1653349339
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -101,16 +126,35 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
 
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+python3 setup.py build
+
+popd
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pypi-onnx
 cp %{_builddir}/onnx-1.11.0/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4
 cp %{_builddir}/onnx-1.11.0/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4
+cp %{_builddir}/onnx-1.11.0/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/6541bf076ce220d26dabd2fc4ebaf7553c63f4a0
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+python3 -tt setup.py build install --root=%{buildroot}-v3
+popd
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -121,9 +165,18 @@ echo ----[ mark ]----
 /usr/bin/check-model
 /usr/bin/check-node
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-pypi-onnx
+
+%files lib
+%defattr(-,root,root,-)
+/usr/share/clear/optimized-elf/other*
+
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4
+/usr/share/package-licenses/pypi-onnx/6541bf076ce220d26dabd2fc4ebaf7553c63f4a0
 
 %files python
 %defattr(-,root,root,-)
