@@ -4,7 +4,7 @@
 #
 Name     : pypi-onnx
 Version  : 1.12.0
-Release  : 52
+Release  : 53
 URL      : https://files.pythonhosted.org/packages/2c/6a/39b0580858589a67c3322aabc2634f158391ffbf98fa410127533e7f1495/onnx-1.12.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/2c/6a/39b0580858589a67c3322aabc2634f158391ffbf98fa410127533e7f1495/onnx-1.12.0.tar.gz
 Summary  : Open Neural Network Exchange
@@ -120,7 +120,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1655856817
+export SOURCE_DATE_EPOCH=1663350312
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -130,6 +130,7 @@ export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 export MAKEFLAGS=%{?_smp_mflags}
+pypi-dep-fix.py . protobuf
 python3 setup.py build
 
 pushd ../buildavx2/
@@ -138,6 +139,7 @@ export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
 export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+pypi-dep-fix.py . protobuf
 python3 setup.py build
 
 popd
@@ -145,10 +147,11 @@ popd
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pypi-onnx
-cp %{_builddir}/onnx-1.12.0/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4
-cp %{_builddir}/onnx-1.12.0/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4
-cp %{_builddir}/onnx-1.12.0/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/6541bf076ce220d26dabd2fc4ebaf7553c63f4a0
+cp %{_builddir}/onnx-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4 || :
+cp %{_builddir}/onnx-%{version}/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4 || :
+cp %{_builddir}/onnx-%{version}/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/6541bf076ce220d26dabd2fc4ebaf7553c63f4a0 || :
 python3 -tt setup.py build  install --root=%{buildroot}
+pypi-dep-fix.py %{buildroot} protobuf
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
