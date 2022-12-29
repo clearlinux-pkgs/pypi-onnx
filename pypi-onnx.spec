@@ -4,7 +4,7 @@
 #
 Name     : pypi-onnx
 Version  : 1.12.0
-Release  : 57
+Release  : 58
 URL      : https://files.pythonhosted.org/packages/2c/6a/39b0580858589a67c3322aabc2634f158391ffbf98fa410127533e7f1495/onnx-1.12.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/2c/6a/39b0580858589a67c3322aabc2634f158391ffbf98fa410127533e7f1495/onnx-1.12.0.tar.gz
 Summary  : Open Neural Network Exchange
@@ -31,6 +31,9 @@ BuildRequires : pypi(setuptools)
 BuildRequires : pypi(typing_extensions)
 BuildRequires : pypi(wheel)
 BuildRequires : python3-dev
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 Patch1: 0001-pybind-update.patch
 
 %description
@@ -122,15 +125,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1666929289
+export SOURCE_DATE_EPOCH=1672295130
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
 export MAKEFLAGS=%{?_smp_mflags}
 pypi-dep-fix.py . protobuf
 python3 setup.py build
@@ -155,9 +158,9 @@ popd
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pypi-onnx
-cp %{_builddir}/onnx-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4
-cp %{_builddir}/onnx-%{version}/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4
-cp %{_builddir}/onnx-%{version}/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/6541bf076ce220d26dabd2fc4ebaf7553c63f4a0
+cp %{_builddir}/onnx-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4 || :
+cp %{_builddir}/onnx-%{version}/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4 || :
+cp %{_builddir}/onnx-%{version}/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/6541bf076ce220d26dabd2fc4ebaf7553c63f4a0 || :
 python3 -tt setup.py build  install --root=%{buildroot}
 pypi-dep-fix.py %{buildroot} protobuf
 echo ----[ mark ]----
