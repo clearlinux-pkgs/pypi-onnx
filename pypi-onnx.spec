@@ -4,12 +4,18 @@
 #
 Name     : pypi-onnx
 Version  : 1.13.0
-Release  : 60
+Release  : 61
 URL      : https://files.pythonhosted.org/packages/6c/f6/215ba9e8d2587755df363170e3be54892b087bad0a99935fe456f7555255/onnx-1.13.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/6c/f6/215ba9e8d2587755df363170e3be54892b087bad0a99935fe456f7555255/onnx-1.13.0.tar.gz
 Summary  : Open Neural Network Exchange
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause
+Requires: pypi-onnx-bin = %{version}-%{release}
+Requires: pypi-onnx-filemap = %{version}-%{release}
+Requires: pypi-onnx-lib = %{version}-%{release}
+Requires: pypi-onnx-license = %{version}-%{release}
+Requires: pypi-onnx-python = %{version}-%{release}
+Requires: pypi-onnx-python3 = %{version}-%{release}
 Requires: pypi(typing_extensions)
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
@@ -19,14 +25,15 @@ BuildRequires : pypi(absl_py)
 BuildRequires : pypi(numpy)
 BuildRequires : pypi(pandas)
 BuildRequires : pypi(protobuf)
+BuildRequires : pypi(pytest_runner)
 BuildRequires : pypi(scipy)
 BuildRequires : pypi(setuptools)
 BuildRequires : pypi(typing_extensions)
 BuildRequires : pypi(wheel)
+BuildRequires : python3-dev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
-Patch1: 0001-pybind-update.patch
 
 %description
 Open Neural Network Exchange (ONNX) is an open ecosystem that empowers AI
@@ -36,10 +43,71 @@ defines an extensible computation graph model, as well as definitions of
 built-in operators and standard data types. Currently we focus on the
 capabilities needed for inferencing (scoring).
 
+%package bin
+Summary: bin components for the pypi-onnx package.
+Group: Binaries
+Requires: pypi-onnx-license = %{version}-%{release}
+Requires: pypi-onnx-filemap = %{version}-%{release}
+
+%description bin
+bin components for the pypi-onnx package.
+
+
+%package filemap
+Summary: filemap components for the pypi-onnx package.
+Group: Default
+
+%description filemap
+filemap components for the pypi-onnx package.
+
+
+%package lib
+Summary: lib components for the pypi-onnx package.
+Group: Libraries
+Requires: pypi-onnx-license = %{version}-%{release}
+Requires: pypi-onnx-filemap = %{version}-%{release}
+
+%description lib
+lib components for the pypi-onnx package.
+
+
+%package license
+Summary: license components for the pypi-onnx package.
+Group: Default
+
+%description license
+license components for the pypi-onnx package.
+
+
+%package python
+Summary: python components for the pypi-onnx package.
+Group: Default
+Requires: pypi-onnx-python3 = %{version}-%{release}
+
+%description python
+python components for the pypi-onnx package.
+
+
+%package python3
+Summary: python3 components for the pypi-onnx package.
+Group: Default
+Requires: pypi-onnx-filemap = %{version}-%{release}
+Requires: python3-core
+Provides: pypi(onnx)
+Requires: pypi(absl_py)
+Requires: pypi(numpy)
+Requires: pypi(pandas)
+Requires: pypi(protobuf)
+Requires: pypi(scipy)
+Requires: pypi(typing_extensions)
+
+%description python3
+python3 components for the pypi-onnx package.
+
+
 %prep
 %setup -q -n onnx-1.13.0
 cd %{_builddir}/onnx-1.13.0
-%patch1 -p1
 pushd ..
 cp -a onnx-1.13.0 buildavx2
 popd
@@ -55,7 +123,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1672933643
+export SOURCE_DATE_EPOCH=1675122453
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -108,3 +176,29 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/backend-test-tools
+/usr/bin/check-model
+/usr/bin/check-node
+
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-pypi-onnx
+
+%files lib
+%defattr(-,root,root,-)
+/usr/share/clear/optimized-elf/other*
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/pypi-onnx/2b8b815229aa8a61e483fb4ba0588b8b6c491890
+/usr/share/package-licenses/pypi-onnx/3dbd61e2b2c71dcc658c3da90bacf2e15958075a
+
+%files python
+%defattr(-,root,root,-)
+
+%files python3
+%defattr(-,root,root,-)
+/usr/lib/python3*/*
