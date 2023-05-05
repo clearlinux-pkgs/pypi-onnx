@@ -4,10 +4,10 @@
 # Using build pattern: distutils3
 #
 Name     : pypi-onnx
-Version  : 1.13.1
-Release  : 63
-URL      : https://files.pythonhosted.org/packages/56/b5/f5889d518276061f999d7cda5714f288b1718cbbc3f538e943822626eead/onnx-1.13.1.tar.gz
-Source0  : https://files.pythonhosted.org/packages/56/b5/f5889d518276061f999d7cda5714f288b1718cbbc3f538e943822626eead/onnx-1.13.1.tar.gz
+Version  : 1.14.0
+Release  : 64
+URL      : https://files.pythonhosted.org/packages/d2/f4/8bdd479ace89b7957231157cfdfec4be629e5bbbbebe21535d6c40df6d02/onnx-1.14.0.tar.gz
+Source0  : https://files.pythonhosted.org/packages/d2/f4/8bdd479ace89b7957231157cfdfec4be629e5bbbbebe21535d6c40df6d02/onnx-1.14.0.tar.gz
 Summary  : Open Neural Network Exchange
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause
@@ -76,10 +76,10 @@ python3 components for the pypi-onnx package.
 
 
 %prep
-%setup -q -n onnx-1.13.1
-cd %{_builddir}/onnx-1.13.1
+%setup -q -n onnx-1.14.0
+cd %{_builddir}/onnx-1.14.0
 pushd ..
-cp -a onnx-1.13.1 buildavx2
+cp -a onnx-1.14.0 buildavx2
 popd
 
 %build
@@ -93,7 +93,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683042344
+export SOURCE_DATE_EPOCH=1683300778
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -126,9 +126,9 @@ popd
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pypi-onnx
-cp %{_builddir}/onnx-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4 || :
-cp %{_builddir}/onnx-%{version}/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4 || :
-cp %{_builddir}/onnx-%{version}/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/6541bf076ce220d26dabd2fc4ebaf7553c63f4a0 || :
+cp %{_builddir}/onnx-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/2b8b815229aa8a61e483fb4ba0588b8b6c491890 || :
+cp %{_builddir}/onnx-%{version}/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/2b8b815229aa8a61e483fb4ba0588b8b6c491890 || :
+cp %{_builddir}/onnx-%{version}/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/pypi-onnx/3dbd61e2b2c71dcc658c3da90bacf2e15958075a || :
 python3 -tt setup.py build  install --root=%{buildroot}
 pypi-dep-fix.py %{buildroot} protobuf
 echo ----[ mark ]----
@@ -155,8 +155,8 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/pypi-onnx/47b573e3824cd5e02a1a3ae99e2735b49e0256e4
-/usr/share/package-licenses/pypi-onnx/6541bf076ce220d26dabd2fc4ebaf7553c63f4a0
+/usr/share/package-licenses/pypi-onnx/2b8b815229aa8a61e483fb4ba0588b8b6c491890
+/usr/share/package-licenses/pypi-onnx/3dbd61e2b2c71dcc658c3da90bacf2e15958075a
 
 %files python
 %defattr(-,root,root,-)
