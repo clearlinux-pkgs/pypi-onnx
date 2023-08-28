@@ -1,5 +1,5 @@
 PKG_NAME := pypi-onnx
-URL = https://files.pythonhosted.org/packages/d2/f4/8bdd479ace89b7957231157cfdfec4be629e5bbbbebe21535d6c40df6d02/onnx-1.14.0.tar.gz
+URL = https://files.pythonhosted.org/packages/8f/71/1543d8dad6a26df1da8953653ebdbedacea9f1a5bcd023fe10f8c5f66d63/onnx-1.14.1.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common

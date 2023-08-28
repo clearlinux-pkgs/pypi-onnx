@@ -4,10 +4,10 @@
 # Using build pattern: distutils3
 #
 Name     : pypi-onnx
-Version  : 1.14.0
-Release  : 65
-URL      : https://files.pythonhosted.org/packages/d2/f4/8bdd479ace89b7957231157cfdfec4be629e5bbbbebe21535d6c40df6d02/onnx-1.14.0.tar.gz
-Source0  : https://files.pythonhosted.org/packages/d2/f4/8bdd479ace89b7957231157cfdfec4be629e5bbbbebe21535d6c40df6d02/onnx-1.14.0.tar.gz
+Version  : 1.14.1
+Release  : 66
+URL      : https://files.pythonhosted.org/packages/8f/71/1543d8dad6a26df1da8953653ebdbedacea9f1a5bcd023fe10f8c5f66d63/onnx-1.14.1.tar.gz
+Source0  : https://files.pythonhosted.org/packages/8f/71/1543d8dad6a26df1da8953653ebdbedacea9f1a5bcd023fe10f8c5f66d63/onnx-1.14.1.tar.gz
 Summary  : Open Neural Network Exchange
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause
@@ -20,8 +20,10 @@ BuildRequires : buildreq-distutils3
 BuildRequires : cmake
 BuildRequires : dos2unix
 BuildRequires : protobuf-dev
-BuildRequires : pypi(absl_py)
+BuildRequires : pypi(numpy)
+BuildRequires : pypi(protobuf)
 BuildRequires : pypi(pytest_runner)
+BuildRequires : pypi(typing_extensions)
 BuildRequires : python3-dev
 # Suppress stripping binaries
 %define __strip /bin/true
@@ -66,7 +68,6 @@ Summary: python3 components for the pypi-onnx package.
 Group: Default
 Requires: python3-core
 Provides: pypi(onnx)
-Requires: pypi(absl_py)
 Requires: pypi(numpy)
 Requires: pypi(protobuf)
 Requires: pypi(typing_extensions)
@@ -76,10 +77,10 @@ python3 components for the pypi-onnx package.
 
 
 %prep
-%setup -q -n onnx-1.14.0
-cd %{_builddir}/onnx-1.14.0
+%setup -q -n onnx-1.14.1
+cd %{_builddir}/onnx-1.14.1
 pushd ..
-cp -a onnx-1.14.0 buildavx2
+cp -a onnx-1.14.1 buildavx2
 popd
 
 %build
@@ -93,7 +94,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1685553238
+export SOURCE_DATE_EPOCH=1693253120
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
