@@ -1,0 +1,25 @@
+From 271671c674d9a04ff6945817159c0e71df2c2baf Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Thu, 23 May 2024 17:22:22 -0700
+Subject: [PATCH] don't use pypi versions of cmake and protobuf
+
+---
+ pyproject.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index d02e7b2..6ff6157 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: Apache-2.0
+ 
+ [build-system]
+-requires = ["setuptools>=64", "protobuf>=3.20.2", "cmake"]
++requires = ["setuptools"]
+ build-backend = "setuptools.build_meta"
+ 
+ [project]
+-- 
+2.45.1
+
