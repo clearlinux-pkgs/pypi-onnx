@@ -7,7 +7,7 @@
 #
 Name     : pypi-onnx
 Version  : 1.17.0
-Release  : 79
+Release  : 80
 URL      : https://files.pythonhosted.org/packages/9a/54/0e385c26bf230d223810a9c7d06628d954008a5e5e4b73ee26ef02327282/onnx-1.17.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/9a/54/0e385c26bf230d223810a9c7d06628d954008a5e5e4b73ee26ef02327282/onnx-1.17.0.tar.gz
 Summary  : Open Neural Network Exchange
